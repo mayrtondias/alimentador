@@ -26,6 +26,14 @@
             android:name="com.alimentador.Inicial"
             android:label="@string/title_activity_inicial" >
         </activity>
+        <activity
+            android:name="com.alimentador.HoraActivity"
+            android:label="@string/title_activity_hora" >
+        </activity>
+        <activity
+            android:name="com.alimentador.DataActivity"
+            android:label="@string/title_activity_data" >
+        </activity>
     </application>
 
 </manifest>
