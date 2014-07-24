@@ -7,14 +7,6 @@
     tools:context="com.alimentador.DataActivity"
     tools:ignore="MergeRootFrame"     >
 
-    <DatePicker
-        android:id="@+id/datePicker1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/textInfoData"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="67dp" />
-
     <TextView
         android:id="@+id/textInfoData"
         android:layout_width="wrap_content"
@@ -26,12 +18,21 @@
         android:textColor="#FFFFFF"
         android:textSize="25sp" />
 
+    <DatePicker
+        android:id="@+id/datePicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textInfoData"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp" />
+
     <Button
         android:id="@+id/buttonOkData"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/textInfoData"
+        android:layout_below="@+id/datePicker1"
+        android:layout_marginTop="20dp"
         android:background="#FFFFFF"
         android:onClick="onClickInicio"
         android:text="@string/ok"
