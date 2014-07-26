@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/textInfoData"
         android:layout_below="@+id/datePicker1"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="34dp"
         android:background="#FFFFFF"
         android:onClick="onClickInicio"
         android:text="@string/ok"
