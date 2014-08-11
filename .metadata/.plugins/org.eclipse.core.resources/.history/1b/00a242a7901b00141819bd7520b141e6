@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00CD66"
+    tools:context="com.alimentador.DataActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <TextView
+        android:id="@+id/textInfoData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp"
+        android:text="@string/InfData"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textInfoData"
+        android:layout_alignRight="@+id/textInfoData"
+        android:layout_below="@+id/textInfoData"
+        android:background="#aa0033"
+        android:orientation="horizontal" >
+
+        <DatePicker
+            android:id="@+id/datePicker1"
+            android:layout_width="wrap_content"
+            android:layout_height="286dp"
+            android:layout_marginTop="22dp"
+            android:layout_weight="0.50" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonOkData"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="22dp"
+        android:layout_marginRight="48dp"
+        android:background="#FFFFFF"
+        android:onClick="onClickInicio"
+        android:text="@string/ok"
+        android:textColor="#00CD66"
+        android:textSize="25sp" />
+
+</RelativeLayout>
