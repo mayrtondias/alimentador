@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+	<TextView
+		android:id="@+id/title"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="20dp"
+		android:gravity="center_horizontal"
+		android:text="Ash feeder"
+		android:textSize="32dp"
+	/>
+	<ImageButton
+		android:id="@+id/feedButton" 
+		android:layout_below="@+id/title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="20dp"
+		android:src="@drawable/ash"
+	/>
+	<TextView
+		android:id="@+id/feedme"
+		android:layout_below="@+id/feedButton"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+
+	    android:layout_marginBottom="20px" 
+	    android:text="Touch me to feed me!"
+	    android:textSize="18dp"
+	    />
+
+	<LinearLayout
+		android:layout_alignParentBottom="true"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_marginBottom="20dp"
+		android:layout_gravity="bottom"
+		>
+		<TextView
+			android:id="@+id/lastFeed"
+		    android:layout_width="wrap_content" 
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.5"
+		    android:paddingLeft="10dp"
+		    android:text=""
+		    />
+		
+		<CheckBox
+			android:id="@+id/testMode"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.3"
+			android:layout_gravity="right"
+			android:text=" Test mode"
+			/>
+	</LinearLayout>
+</RelativeLayout>
