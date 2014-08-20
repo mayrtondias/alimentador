@@ -1,0 +1,231 @@
+package com.cliente;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Set;
+import java.util.UUID;
+
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v4.app.Fragment;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import android.os.Build;
+
+public class MainActivity extends ActionBarActivity {
+	
+	/**
+     * Caixa de Mensagem
+     */
+    private EditText mensagem;
+
+    /**
+     * Botão de Envio
+     */
+    private Button enviar;
+
+    /**
+     * Socket de Conexão
+     */
+    private BluetoothSocket socket;
+
+    /**
+     * Fluxo de Entrada de Dados
+     */
+    private InputStream input;
+
+    /**
+     * Fluxo de Saída de Dados
+     */
+    private OutputStream output;
+
+    /**
+     * Manipulador de Mensagens
+     */
+    private final Handler h = new Handler() {
+        public void handleMessage(Message msg) { // Manipular Mensagem
+            String content = (String) msg.obj; // Captura do Conteúdo da Mensagem
+            Toast.makeText(MainActivity.this, content, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    /**
+     * Envia Mensagens entre Fluxos de Execução
+     * @param message Mensagem para Envio
+     */
+    public void alert(String message) {
+        Message m = h.obtainMessage();
+        m.obj = message;
+        h.sendMessage(m);
+    }
+ 
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        // Cliente de Conexão Bluetooth
+        // Caixa de Texto
+        mensagem = (EditText) findViewById(R.id.mensagem);
+        // Botão de Envio
+        enviar = (Button) findViewById(R.id.enviar);
+        enviar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Captura do Texto
+                final String conteudo = mensagem.getText().toString();
+                // Transferidor de Dados
+                Thread sender = new Thread(){
+                    public void run() {
+                        // Conteúdo para Envio
+                        byte content[] = conteudo.getBytes();
+                        try { // Possibilidade de Erro
+                            output.write(content.length); // Tamanho do Conteúdo
+                            output.write(content); // Conteúdo Propriamente Dito
+                            // Aviso de Sucesso ao Usuário
+                            alert("Texto Enviado");
+                        } catch (IOException e) { // Erro Encontrado
+                            // Aviso de Erro ao Usuário
+                            alert("Erro na Transferência");
+                        }
+                    }
+                };
+                // Executando o Fluxo de Processamento
+                sender.start(); // Inicialização
+            }
+        });
+        // Requisição do Adaptador
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter == null) { // Não há Bluetooth
+            // Mensagem de Erro ao Usuário
+            alert("Adaptador não Encontrado");
+            finish();
+        }
+        if (!adapter.isEnabled()) { // Bluetooth Habilitado?
+            // Mensagem de Erro ao Usuário
+            alert("Bluetooth Desabilitado");
+            finish();
+        }
+        // Dispositivos Pareados
+        Set<BluetoothDevice> devices = adapter.getBondedDevices();
+        // Servidor Bluetooth
+        BluetoothDevice server = null;
+        String servername = "Ganondorf"; // Nome do Servidor
+        // Pesquisa do Servidor Pareado
+        for (BluetoothDevice device : devices) { // Laço de Busca
+            if (servername.equals(device.getName())) { // Nomes Idênticos?
+                server = device; // Dispositivo Encontrado e Selecionado
+            }
+        }
+        // Dispositivo Encontrado?
+        if (server == null) {
+            // Mensagem de Erro ao Usuário
+            alert("Servidor não Pareado");
+            finish();
+        }
+        // Servidor Bluetooth
+        final BluetoothDevice computer = server;
+        // Abrindo a Conexão
+        Thread connector = new Thread(){
+            public void run() {
+                // Identificador Único do Servidor
+                UUID ident = UUID.fromString("879c35370ae66040130a67709b7e5339d13c");
+                try {
+                    // Socket de Conexão
+                    BluetoothSocket s =
+                        // Conexão a Partir do Identificador Único
+                        computer.createRfcommSocketToServiceRecord(ident);
+                    // Conectar ao Servidor
+                    s.connect(); // Execução Bloqueante
+                    // Fluxos de Entrada e Saída de Dados
+                    InputStream in = s.getInputStream();
+                    OutputStream out = s.getOutputStream();
+                    // Captura de Objetos
+                    socket = s; // Socket de Conexão
+                    input  = in; // Fluxo de Entrada de Dados
+                    output = out; // Fluxo de Saída de Dados
+                    // Informar sobre Conexão
+                    alert("Conexão Aberta");
+                } catch (IOException e) { // Erro de Entrada e Saída de Dados
+                    // Mensagem de Erro ao Usuário
+                    alert("Erro de Conexão");
+                    finish();
+                }
+            }
+        };
+        // Executando o Fluxo de Processamento
+        connector.start(); // Inicialização
+    }
+
+    public void onDestroy() {
+        super.onDestroy(); // Método Sobrescrito
+        if (socket != null) { // Socket Configurado?
+            try {
+                socket.close(); // Fecha Conexão
+            } catch (IOException e) { // Erro Encontrado?
+                // Mensagem de Erro ao Usuário
+                alert("Erro ao Fechar Socket");
+            }
+        }
+    }
+	/*
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new PlaceholderFragment())
+                    .commit();
+        }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+
+        public PlaceholderFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            return rootView;
+        }
+    }
+
+}
