@@ -1,0 +1,60 @@
+package server.alimentador;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.microedition.io.Connector;
+import javax.microedition.io.StreamConnection;
+import javax.microedition.io.StreamConnectionNotifier;
+
+public class Server implements Runnable {
+    /**
+     * Fluxo de Execução Principal
+     */
+    public void run() {
+        // Identificador Único de Conexão
+        String uuid = "879c3537-ae66-4013-a677-9b7e5339d13c";
+        // Endereço para Conexão
+        String address = "btspp://localhost:" + uuid.replace("-", "");
+         
+        try {
+            // Abertura de Conexão
+            StreamConnectionNotifier notifier =
+                (StreamConnectionNotifier) Connector.open(address);
+            // Fluxo de Conexão
+            StreamConnection stream = notifier.acceptAndOpen();
+            // Captura de Fluxos
+            InputStream input = stream.openInputStream();
+            OutputStream output = stream.openOutputStream();
+            // Laço de Repetição
+            int size; byte content[]; // Auxiliares de Leitura
+            String message = ""; // Mensagem Enviada pelo Cliente
+            while (!message.equals("SAIR")) {
+                // Tamanho dos Dados
+                size = input.read(); // Quantidade de Bytes
+                // Buffer de Leitura
+                content = new byte[size];
+                // Preenchimento dos Dados
+                input.read(content); // Entrada de Informação
+                // Transformação da Mensagem Enviada
+                message = new String(content); // Novo Elemento
+                // Exibição na Saída Padrão
+                System.out.println(message);
+            }
+        } catch (IOException e) {
+            // Erro Encontrado
+            e.printStackTrace();
+        }
+    }
+    /**
+     * Execução Principal do Aplicativo
+     * @param args Argumentos de Execução
+     */
+    public static void main(String args[]) {
+        Server server = new Server();
+        server.run();
+    }
+}
+
+
+
