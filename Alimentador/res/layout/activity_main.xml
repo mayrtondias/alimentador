@@ -21,12 +21,25 @@
             android:textSize="25sp" />
 
         <Button
+            android:id="@+id/buttonAlimentar"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/buttonHora"
+            android:layout_below="@+id/buttonHora"
+            android:layout_marginTop="33dp"
+            android:background="#FFFFFF"
+            android:onClick="onClickAlimentar"
+            android:text="@string/alimentar"
+            android:textColor="#00CD66"
+            android:textSize="25sp" />
+
+        <Button
             android:id="@+id/buttonDate"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="142dp"
+            android:layout_marginTop="113dp"
             android:background="#FFFFFF"
             android:onClick="onClickData"
             android:text="@string/data"
