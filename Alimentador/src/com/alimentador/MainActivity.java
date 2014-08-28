@@ -2,6 +2,7 @@ package com.alimentador;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class MainActivity extends ActionBarActivity {
+	
+	BluetoothAdapter bt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,16 @@ public class MainActivity extends ActionBarActivity {
     public void onClickHora(View v){
 		Intent i = new Intent();
 		i.setClass(this, HoraActivity.class);
+		startActivity(i);
+		
+	}
+    
+    public void onClickAlimentar(View v){
+		Intent i = new Intent();
+		
+		
+		
+		i.setClass(this, Carregando.class);
 		startActivity(i);
 		
 	}
